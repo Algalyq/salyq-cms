@@ -43,7 +43,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            NEXT_PUBLIC_API_URL=${{ vars.API_URL || 'http://localhost:8090' }}
+            NEXT_PUBLIC_API_URL=${{ vars.API_URL || 'http://localhost:8500' }}
 
   deploy:
     needs: build
@@ -54,11 +54,11 @@ jobs:
         run: |
           if [ "${{ github.ref_name }}" = "master" ]; then
             echo "tag=latest" >> $GITHUB_OUTPUT
-            echo "port=8092" >> $GITHUB_OUTPUT
+            echo "port=8502" >> $GITHUB_OUTPUT
             echo "container=salyq-cms-master" >> $GITHUB_OUTPUT
           else
             echo "tag=test" >> $GITHUB_OUTPUT
-            echo "port=8093" >> $GITHUB_OUTPUT
+            echo "port=8503" >> $GITHUB_OUTPUT
             echo "container=salyq-cms-test" >> $GITHUB_OUTPUT
           fi
 
@@ -84,7 +84,7 @@ jobs:
             --name ${{ steps.vars.outputs.container }} \
             --restart unless-stopped \
             -p ${{ steps.vars.outputs.port }}:3000 \
-            -e NEXT_PUBLIC_API_URL=${{ vars.API_URL || 'http://localhost:8090' }} \
+            -e NEXT_PUBLIC_API_URL=${{ vars.API_URL || 'http://localhost:8500' }} \
             ghcr.io/algalyq/salyq-cms:${{ steps.vars.outputs.tag }}
 
       - name: Cleanup old images
