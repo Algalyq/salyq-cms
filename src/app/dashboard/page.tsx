@@ -121,7 +121,7 @@ export default function DashboardPage() {
                   {t("dashboard.eligibility_form")} {eligibility.target_form}
                 </Badge>
               </div>
-              <Button className="w-full sm:w-auto">
+              <Button className="w-full sm:w-auto" onClick={() => (window.location.href = "/payment")}>
                 {t("dashboard.eligibility_cta", {
                   form: eligibility.target_form,
                   year: eligibility.target_year,

@@ -110,3 +110,49 @@ export async function fetchEligibility(): Promise<EligibilityResponse> {
 
   return res.json();
 }
+
+// --- Payment API ---
+
+const API_PAYMENTS_BASE = process.env.NEXT_PUBLIC_API_URL
+  ? `${process.env.NEXT_PUBLIC_API_URL}/api/v1/payments`
+  : "http://localhost:8000/api/v1/payments";
+
+export interface CreateQrResponse {
+  operation_id: string;
+  qr_token: string;
+  qr_original_token: string;
+  amount: number;
+  status: string;
+}
+
+export interface PaymentStatusResponse {
+  operation_id: string;
+  status: string;
+  amount: number | null;
+  receipt_url: string | null;
+}
+
+export async function createPaymentQr(amount?: number): Promise<CreateQrResponse> {
+  const res = await authFetch(`${API_PAYMENTS_BASE}/create-qr`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ amount }),
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || "Failed to create QR");
+  }
+
+  return res.json();
+}
+
+export async function checkPaymentStatus(operationId: string): Promise<PaymentStatusResponse> {
+  const res = await authFetch(`${API_PAYMENTS_BASE}/${operationId}/status`);
+
+  if (!res.ok) {
+    throw new Error("Failed to check payment status");
+  }
+
+  return res.json();
+}
