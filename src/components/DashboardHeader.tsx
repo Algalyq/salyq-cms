@@ -1,17 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { FileCheck2 } from "lucide-react";
+import { FileCheck2, LogOut } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { AuthModal } from "@/components/AuthModal";
+import { getCurrentUser, logout } from "@/lib/auth";
 
-export function Header() {
+export function DashboardHeader() {
   const { t } = useTranslation();
-  const [authOpen, setAuthOpen] = useState(false);
+  const router = useRouter();
+  const user = getCurrentUser();
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -19,7 +20,7 @@ export function Header() {
         <div className="flex min-w-0 items-center gap-2">
           <FileCheck2 className="size-6 shrink-0 text-primary" />
           <span className="truncate text-base font-bold sm:text-lg">
-            {t("header.title")}
+            {t("dashboard.header_title")}
           </span>
           <Badge variant="secondary" className="hidden sm:inline-flex">
             {t("header.badge")}
@@ -28,17 +29,22 @@ export function Header() {
 
         <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
           <LanguageSwitcher />
+          <div className="hidden items-center gap-2 sm:flex">
+            <span className="text-sm text-muted-foreground">
+              {user?.fullName}
+            </span>
+          </div>
           <Button
             size="sm"
+            variant="outline"
             className="px-2.5 text-xs sm:px-4 sm:text-sm"
-            onClick={() => setAuthOpen(true)}
+            onClick={() => logout()}
           >
-            {t("header.login_btn")}
+            <LogOut className="mr-1 size-4" />
+            {t("dashboard.logout")}
           </Button>
         </div>
       </div>
-
-      <AuthModal open={authOpen} onOpenChange={setAuthOpen} />
     </header>
   );
 }
