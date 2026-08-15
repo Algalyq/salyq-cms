@@ -156,3 +156,42 @@ export async function checkPaymentStatus(operationId: string): Promise<PaymentSt
 
   return res.json();
 }
+
+// --- SIGEX eGov QR auth ---
+
+export interface QrCreateResponse {
+  session_id: string;
+  qr_code: string;
+  expires_at: number;
+}
+
+export interface QrStatusResponse {
+  status: "pending" | "success" | "expired" | "canceled" | "failed" | "error";
+  accessToken?: string;
+  refreshToken?: string;
+  user?: { iin: string; fullName: string };
+}
+
+export async function createQrAuthSession(): Promise<QrCreateResponse> {
+  const res = await fetch(`${API_BASE}/qr/create`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || "Failed to create QR session");
+  }
+
+  return res.json();
+}
+
+export async function pollQrAuthStatus(sessionId: string): Promise<QrStatusResponse> {
+  const res = await fetch(`${API_BASE}/qr/${sessionId}/status`);
+
+  if (!res.ok) {
+    throw new Error("Failed to check QR status");
+  }
+
+  return res.json();
+}
