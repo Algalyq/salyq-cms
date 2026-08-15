@@ -4,7 +4,7 @@ import { initReactI18next } from "react-i18next";
 import ru from "@/locales/ru.json";
 import kk from "@/locales/kk.json";
 
-export const defaultLocale = "ru";
+export const defaultLocale = "kk";
 export const locales = ["ru", "kk"] as const;
 export type Locale = (typeof locales)[number];
 export const langStorageKey = "salyq-lang";

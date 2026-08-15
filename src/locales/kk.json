@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Декларация.kz",
+    "title": "Salyq",
     "badge": "ТҒН 250.00 / 270.00",
     "login_btn": "ЭЦҚ арқылы кіру",
     "lang_ru": "Русский",
@@ -95,7 +95,7 @@
     "support": "Қолдау"
   },
   "dashboard": {
-    "header_title": "Декларация.kz — Жеке кабинет",
+    "header_title": "Salyq",
     "logout": "Шығу",
     "welcome": "Сәлеметсіз бе",
     "iin": "ЖСН",

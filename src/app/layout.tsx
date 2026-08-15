@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Декларация.kz — Всеобщая налоговая декларация РК",
+  title: "Salyq — Всеобщая налоговая декларация РК",
   description:
     "Сдайте Всеобщую декларацию (ФНО 250.00 / 270.00) за 3 минуты без ошибок и штрафов.",
 };
@@ -26,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" suppressHydrationWarning>
+    <html lang="kk" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <I18nProvider>{children}</I18nProvider>
       </body>

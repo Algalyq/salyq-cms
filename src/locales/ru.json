@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Декларация.kz",
+    "title": "Salyq",
     "badge": "ФНО 250.00 / 270.00",
     "login_btn": "Войти через ЭЦП",
     "lang_ru": "Русский",
@@ -95,7 +95,7 @@
     "support": "Поддержка"
   },
   "dashboard": {
-    "header_title": "Декларация.kz — Личный кабинет",
+    "header_title": "Salyq",
     "logout": "Выйти",
     "welcome": "Здравствуйте",
     "iin": "ИИН",
