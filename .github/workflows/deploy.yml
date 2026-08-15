@@ -55,11 +55,11 @@ jobs:
           if [ "${{ github.ref_name }}" = "master" ]; then
             echo "tag=latest" >> $GITHUB_OUTPUT
             echo "port=8092" >> $GITHUB_OUTPUT
-            echo "container=salyq-cms-prod" >> $GITHUB_OUTPUT
+            echo "container=salyq-cms-master" >> $GITHUB_OUTPUT
           else
             echo "tag=test" >> $GITHUB_OUTPUT
             echo "port=8093" >> $GITHUB_OUTPUT
-            echo "container=salyq-cms-staging" >> $GITHUB_OUTPUT
+            echo "container=salyq-cms-test" >> $GITHUB_OUTPUT
           fi
 
       - name: Log in to GHCR
