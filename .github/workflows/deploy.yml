@@ -1,0 +1,60 @@
+name: Build & Deploy
+
+on:
+  push:
+    branches:
+      - master
+      - test
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: |
+          docker build -t salyq-cms:${{ github.ref_name }} .
+
+      - name: Save Docker image
+        run: |
+          docker save salyq-cms:${{ github.ref_name }} -o salyq-cms.tar
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: salyq-cms-image
+          path: salyq-cms.tar
+          retention-days: 1
+
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: salyq-cms-image
+
+      - name: Load Docker image
+        run: |
+          docker load -i salyq-cms.tar
+
+      - name: Tag as latest
+        run: |
+          docker tag salyq-cms:${{ github.ref_name }} salyq-cms:latest
+
+      - name: Deploy container
+        run: |
+          docker stop salyq-cms-${{ github.ref_name }} || true
+          docker rm salyq-cms-${{ github.ref_name }} || true
+
+          docker run -d \
+            --name salyq-cms-${{ github.ref_name }} \
+            --restart unless-stopped \
+            -p ${{ github.ref_name == 'master' && '3000:3000' || '3001:3000' }} \
+            -e NEXT_PUBLIC_API_URL=${{ vars.API_URL || 'http://localhost:8000' }} \
+            salyq-cms:${{ github.ref_name }}
+
+      - name: Cleanup artifact
+        run: rm -f salyq-cms.tar
