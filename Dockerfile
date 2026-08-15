@@ -18,7 +18,8 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-COPY --from=builder /app/package.json package-lock.json ./
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/package-lock.json ./
 RUN npm ci --production
 
 COPY --from=builder /app/.next ./.next
