@@ -43,7 +43,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            NEXT_PUBLIC_API_URL=${{ vars.API_URL || 'https://api.salyq.gulzar.kz' }}
+            NEXT_PUBLIC_API_URL=${{ vars.API_URL || 'https://salyq-api.gulzar.kz' }}
 
   deploy:
     needs: build
@@ -84,7 +84,7 @@ jobs:
             --name ${{ steps.vars.outputs.container }} \
             --restart unless-stopped \
             -p ${{ steps.vars.outputs.port }}:3000 \
-            -e NEXT_PUBLIC_API_URL=${{ vars.API_URL || 'https://api.salyq.gulzar.kz' }} \
+            -e NEXT_PUBLIC_API_URL=${{ vars.API_URL || 'https://salyq-api.gulzar.kz' }} \
             ghcr.io/algalyq/salyq-cms:${{ steps.vars.outputs.tag }}
 
       - name: Cleanup old images
