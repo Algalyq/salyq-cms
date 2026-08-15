@@ -344,7 +344,7 @@ export function AuthModal({
               <div className="flex flex-col items-center gap-4">
                 <div className="rounded-xl border-2 border-primary/20 p-4">
                   <img
-                    src={qrSession.qr_code}
+                    src={`data:image/png;base64,${qrSession.qr_code}`}
                     alt="eGov QR"
                     className="size-56"
                   />
