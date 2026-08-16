@@ -156,7 +156,7 @@ export default function PaymentPage() {
               {/* Dynamic QR Code */}
               <div className="rounded-xl border-2 border-primary/20 bg-white p-4">
                 <QRCodeSVG
-                  value={qrData.qr_original_token || qrData.qr_token}
+                  value={qrData.qr_original_token}
                   size={240}
                   level="M"
                   includeMargin={false}
