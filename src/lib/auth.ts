@@ -122,6 +122,7 @@ export interface CreateQrResponse {
   qr_token: string;
   qr_original_token: string;
   amount: number;
+  expire_date: string | null;
   status: string;
 }
 
