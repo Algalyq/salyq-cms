@@ -15,9 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Salyq — Всеобщая налоговая декларация РК",
-  description:
-    "Сдайте Всеобщую декларацию (ФНО 250.00 / 270.00) за 3 минуты без ошибок и штрафов.",
+  title: "Salyq",
+  description: "Сдайте Всеобщую декларацию (ФНО 250.00 / 270.00) за 3 минуты без ошибок и штрафов.",
 };
 
 export default function RootLayout({
