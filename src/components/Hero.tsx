@@ -1,12 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CheckCircle2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { AuthModal } from "@/components/AuthModal";
 
 export function Hero() {
   const { t } = useTranslation();
+  const [authOpen, setAuthOpen] = useState(false);
 
   const bullets = [
     t("hero.bullet_1"),
@@ -34,12 +37,16 @@ export function Hero() {
         </ul>
 
         <div className="flex flex-col gap-3 sm:flex-row">
-          <Button size="lg">{t("hero.cta_main")}</Button>
+          <Button size="lg" onClick={() => setAuthOpen(true)}>
+            {t("hero.cta_main")}
+          </Button>
           <Button size="lg" variant="outline" onClick={() => document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth" })}>
             {t("hero.cta_secondary")}
           </Button>
         </div>
       </div>
+
+      <AuthModal open={authOpen} onOpenChange={setAuthOpen} />
     </section>
   );
 }
