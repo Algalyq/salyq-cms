@@ -27,12 +27,18 @@ export default function PaymentPage() {
   const [state, setState] = useState<PaymentState>("loading");
   const [qrData, setQrData] = useState<CreateQrResponse | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const stopPolling = useCallback(() => {
     if (pollRef.current) {
       clearInterval(pollRef.current);
       pollRef.current = null;
+    }
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
     }
   }, []);
 
@@ -72,6 +78,37 @@ export default function PaymentPage() {
       setQrData(result);
       setState("pending");
       startPolling(result.operation_id);
+
+      // Start countdown timer if expire_date is available
+      if (result.expire_date) {
+        const expire = new Date(result.expire_date).getTime();
+        const now = Date.now();
+        const seconds = Math.max(0, Math.floor((expire - now) / 1000));
+        setTimeLeft(seconds);
+        timerRef.current = setInterval(() => {
+          setTimeLeft((prev) => {
+            if (prev === null || prev <= 1) {
+              if (timerRef.current) clearInterval(timerRef.current);
+              setState("expired");
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+      } else {
+        // Default TTL: 180 seconds (Kaspi default scan wait timeout)
+        setTimeLeft(180);
+        timerRef.current = setInterval(() => {
+          setTimeLeft((prev) => {
+            if (prev === null || prev <= 1) {
+              if (timerRef.current) clearInterval(timerRef.current);
+              setState("expired");
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+      }
     } catch (e) {
       setState("error");
       setErrorMsg(e instanceof Error ? e.message : String(e));
@@ -170,6 +207,11 @@ export default function PaymentPage() {
                     <Clock className="size-4 animate-pulse text-primary" />
                     <span className="text-sm text-muted-foreground">
                       {t("payment.waiting_payment")}
+                      {timeLeft !== null && timeLeft > 0 && (
+                        <span className="ml-1 font-mono text-primary">
+                          {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
+                        </span>
+                      )}
                     </span>
                   </>
                 )}
