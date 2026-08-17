@@ -17,7 +17,7 @@ export function StepsSection() {
   }));
 
   return (
-    <section className="border-b bg-muted/30">
+    <section id="how-it-works" className="border-b bg-muted/30 scroll-mt-16">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:py-24">
         <h2 className="text-center text-2xl font-bold tracking-tight sm:text-3xl">
           {t("steps.title")}

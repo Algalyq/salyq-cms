@@ -35,7 +35,7 @@ export function Hero() {
 
         <div className="flex flex-col gap-3 sm:flex-row">
           <Button size="lg">{t("hero.cta_main")}</Button>
-          <Button size="lg" variant="outline">
+          <Button size="lg" variant="outline" onClick={() => document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth" })}>
             {t("hero.cta_secondary")}
           </Button>
         </div>
